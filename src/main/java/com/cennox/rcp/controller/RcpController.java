@@ -26,7 +26,7 @@ public class RcpController {
         this.rcpService = rcpService;
     }
 
-    @PostMapping
+    @PostMapping("/device/create")
     public ResponseEntity<Device> createDevice(@RequestBody Device device) {
         return ResponseEntity.ok(rcpService.createDevice(device));
     }
