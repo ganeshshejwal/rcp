@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Device {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "terminal_id", nullable = false, unique = true, length = 20)
