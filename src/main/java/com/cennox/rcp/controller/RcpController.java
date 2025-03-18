@@ -28,28 +28,28 @@ public class RcpController {
         this.rcpService = rcpService;
     }
 
-    @PostMapping
+    @PostMapping("/device/create")
     public ResponseEntity<Device> createDevice(@RequestBody Device device) {
         return ResponseEntity.ok(rcpService.createDevice(device));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/device/get/{id}")
     public ResponseEntity<Device> getDeviceById(@PathVariable UUID id) {
         Device device = rcpService.getDeviceById(id);
         return ResponseEntity.ok(device);
     }
 
-    @GetMapping
+    @GetMapping("/device/get-all")
     public ResponseEntity<List<Device>> getAllDevices() {
         return ResponseEntity.ok(rcpService.getAllDevices());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/device/update/{id}")
     public ResponseEntity<Device> updateDevice(@PathVariable UUID id, @RequestBody Device device) {
         return ResponseEntity.ok(rcpService.updateDevice(id, device));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/device/delete/{id}")
     public ResponseEntity<String> deleteDevice(@PathVariable UUID id) {
         return ResponseEntity.ok(rcpService.deleteDevice(id));
     }
