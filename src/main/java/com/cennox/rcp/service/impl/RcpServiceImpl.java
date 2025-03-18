@@ -1,5 +1,10 @@
 package com.cennox.rcp.service.impl;
 
-public class RcpServiceImpl {
+import org.springframework.stereotype.Service;
+
+import com.cennox.rcp.service.RcpService;
+
+@Service
+public class RcpServiceImpl implements RcpService{
 
 }

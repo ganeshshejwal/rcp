@@ -1,5 +1,6 @@
 package com.cennox.rcp.service;
 
-public class RcpService {
+public interface RcpService {
 
-}
+    
+} 
