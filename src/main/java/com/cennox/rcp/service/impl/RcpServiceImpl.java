@@ -11,17 +11,56 @@ import org.springframework.stereotype.Service;
 import com.cennox.rcp.entity.Acquirer;
 import com.cennox.rcp.repository.AcquirerRepository;
 import com.cennox.rcp.service.RcpService;
+import com.cennox.rcp.entity.Device;
+import com.cennox.rcp.repository.DeviceRepository;
 
 @Service
-public class RcpServiceImpl implements RcpService{
+public class RcpServiceImpl implements RcpService {
+    
+    private final DeviceRepository deviceRepository;
+    
+    private final AcquirerRepository acquirerRepository;
+
+    public RcpServiceImpl(DeviceRepository deviceRepository, AcquirerRepository acquirerRepository) {
+        this.acquirerRepository = acquirerRepository;
+        this.deviceRepository = deviceRepository;
+    }
+    
+
+    @Override
+    public Device createDevice(Device device) {
+        return deviceRepository.save(device);
+    }
+
+    @Override
+    public Device getDeviceById(UUID id) {
+        Optional<Device> exisitingOptional = deviceRepository.findById(id);
+        return exisitingOptional.get();
+    }
+
+    @Override
+    public List<Device> getAllDevices() {
+        return deviceRepository.findAll();
+    }
+
+    @Override
+    public Device updateDevice(UUID id, Device device) {
+        Device existingDevice = getDeviceById(id);
+        existingDevice.setTerminalId(device.getTerminalId());
+        existingDevice.setMerchantId(device.getMerchantId());
+        existingDevice.setDeviceType(device.getDeviceType());
+        existingDevice.setLocation(device.getLocation());
+        return deviceRepository.save(existingDevice);
+    }
+
+    @Override
+    public String deleteDevice(UUID id) {
+        deviceRepository.deleteById(id);
+        return "Device Deleted Sucessfully";
+    }
 
     private Logger logger = LoggerFactory.getLogger(RcpServiceImpl.class);
 
-    private final AcquirerRepository acquirerRepository;
-
-    public RcpServiceImpl(AcquirerRepository acquirerRepository) {
-        this.acquirerRepository = acquirerRepository;
-    }
 
     @Override
     public Acquirer createAcquirer(Acquirer acquirer) {
