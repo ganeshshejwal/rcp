@@ -36,5 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### Log File ###
+### Log Files ###
 application.log
+*.gz
