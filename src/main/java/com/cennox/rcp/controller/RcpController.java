@@ -75,8 +75,9 @@ public class RcpController {
     // }
 
     @DeleteMapping("/acquirer/Delete/{cacheId}")   
-    public void deleteAcquirer(@PathVariable (name = "cacheId") Long cacheId) {
+    public String deleteAcquirer(@PathVariable (name = "cacheId") Long cacheId) {
         rcpService.deleteAcquirer(cacheId);
+        return "Acquirer deleted successfully";
     }
 
 }
