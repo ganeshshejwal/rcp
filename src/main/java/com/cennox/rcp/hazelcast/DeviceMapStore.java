@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,61 +15,61 @@ import com.cennox.rcp.repository.DeviceRepository;
 import com.hazelcast.map.MapStore;
 
 @Component
-public class DeviceMapStore implements MapStore<UUID, Device> {
+public class DeviceMapStore implements MapStore<Long, Device> {
     
-    @Lazy
     private DeviceRepository deviceRepository;
 
-    public DeviceMapStore(DeviceRepository deviceRepository) {
+    public DeviceMapStore(@Lazy DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
     }
 
     private Logger logger = LoggerFactory.getLogger(DeviceMapStore.class);
 
     @Override
-    public Device load(UUID key) {
+    public Device load(Long key) {
         logger.info("Fetching data for key: {} from DB", key);
         return deviceRepository.findById(key).orElse(null);
     }
 
     @Override
-    public Map<UUID, Device> loadAll(Collection<UUID> keys) {
-        Map<UUID, Device> map = new HashMap<>();
+    public Map<Long, Device> loadAll(Collection<Long> keys) {
+         Map<Long, Device>  map = new HashMap<>();
         List<Device> devices = deviceRepository.findAllById(keys);
         for (Device device : devices) {
-            map.put(device.getId(), device);
+            map.put(device.getCacheId(), device);
         }
         logger.info("Fetching multiple keys from DB: {}", keys);
         return map;
     }
 
     @Override
-    public Iterable<UUID> loadAllKeys() {
-        List<UUID> allKeys = deviceRepository.findAll().stream().map(Device::getId).toList();
+    public Iterable<Long> loadAllKeys() {
+         List<Long> allKeys = deviceRepository.findAll().stream().map(Device::getCacheId).toList();
         logger.info("Keys loaded: {}", allKeys);
         return allKeys;
     }
 
     @Override
-    public void store(UUID key, Device value) {
+    public void store(Long key, Device value) {
         logger.info("Storing data for key: {} in DB", key);
         deviceRepository.save(value);
     }
 
     @Override
-    public void storeAll(Map<UUID, Device> map) {
+    public void storeAll(Map<Long, Device> map) {
         deviceRepository.saveAll(map.values());
     }
 
     @Override
-    public void delete(UUID key) {
+    public void delete(Long key) {
         logger.info("Deleting data for key: {} from DB", key);
         deviceRepository.deleteById(key);
     }
 
     @Override
-    public void deleteAll(Collection<UUID> keys) {
+    public void deleteAll(Collection<Long> keys) {
         keys.forEach(deviceRepository::deleteById);
     }
+
 }
 
